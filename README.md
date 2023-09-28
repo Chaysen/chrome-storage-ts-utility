@@ -1,6 +1,5 @@
-[![Node.js CI](https://github.com/Chaysen/chrome-storage-ts-utility/actions/workflows/nodejs.yml/badge.svg?branch=main)](https://github.com/Chaysen/chrome-storage-ts-utility/actions/workflows/nodejs.yml)
-
 # ChromeStorageTS
+[![Node.js CI](https://github.com/Chaysen/chrome-storage-ts-utility/actions/workflows/nodejs.yml/badge.svg?branch=main&event=push)](https://github.com/Chaysen/chrome-storage-ts-utility/actions/workflows/nodejs.yml)
 
 A TypeScript utility for interacting with Chrome's local storage in a type-safe manner.
 
