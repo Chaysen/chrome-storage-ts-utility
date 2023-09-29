@@ -35,7 +35,7 @@ export class ChromeStorageTS {
    */
   public async resetChromeStorage(): Promise<void> {
     this.keys.forEach((storageKey) => {
-      this.updateStorageSettingsKeyValue(storageKey, undefined);
+      this.updateStorageKeyValue(storageKey, undefined);
     });
   }
 
@@ -45,9 +45,10 @@ export class ChromeStorageTS {
    * @param {any} value - The value to set for the specified key.
    * @returns {Promise<void>}
    */
-  public async updateStorageSettingsKeyValue<
-    T extends keyof typeof this.storage
-  >(setting: T, value: (typeof this.storage)[T]): Promise<void> {
+  public async updateStorageKeyValue<T extends keyof typeof this.storage>(
+    setting: T,
+    value: (typeof this.storage)[T]
+  ): Promise<void> {
     await chrome.storage.local.set({
       [setting]: value,
     });
@@ -59,7 +60,7 @@ export class ChromeStorageTS {
    * @param {Function} cb - The callback function to pass the retrieved value.
    * @returns {Promise<void>}
    */
-  public async getStorageSettingsKeyValue<T extends keyof typeof this.storage>(
+  public async getStorageKeyValue<T extends keyof typeof this.storage>(
     key: T,
     cb: (settings: (typeof this.storage)[T]) => void
   ): Promise<void> {
@@ -74,7 +75,7 @@ export class ChromeStorageTS {
    * @param {Function} cb - The callback function to pass the retrieved values.
    * @returns {Promise<void>}
    */
-  public async getStorageSettingsKeysValue<T extends keyof typeof this.storage>(
+  public async getStorageKeysValue<T extends keyof typeof this.storage>(
     keys: T[],
     cb: (settings: {
       [k in T]: (typeof this.storage)[k];
@@ -91,9 +92,10 @@ export class ChromeStorageTS {
    * @param {Function} cb - The callback function to pass the new value when a change is detected.
    * @returns {Promise<void>}
    */
-  async addListenerChromeStorageSettingsValue<
-    T extends keyof typeof this.storage
-  >(key: T, cb: (settings: (typeof this.storage)[T]) => void): Promise<void> {
+  async addListenerChromeStorageValue<T extends keyof typeof this.storage>(
+    key: T,
+    cb: (settings: (typeof this.storage)[T]) => void
+  ): Promise<void> {
     await chrome.storage.local.onChanged.addListener((ChromeChangeObject) => {
       if (key in ChromeChangeObject) {
         cb(ChromeChangeObject[key].newValue);
@@ -107,9 +109,7 @@ export class ChromeStorageTS {
    * @param {Function} cb - The callback function to pass the new values when changes are detected.
    * @returns {Promise<void>}
    */
-  async addListenerChromeStorageSettingsValues<
-    T extends keyof typeof this.storage
-  >(
+  async addListenerChromeStorageValues<T extends keyof typeof this.storage>(
     keys: T[],
     cb: (settings: {
       [k in T]?: (typeof this.storage)[k] | undefined;

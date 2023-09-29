@@ -30,7 +30,7 @@ const initialStorage = {
 const storageInstance = new ChromeStorageTS(initialStorage);
 
 // Update a key in the storage
-storageInstance.updateStorageSettingsKeyValue('key1', 'newValue');
+storageInstance.updateStorageKeyValue('key1', 'newValue');
 
 // ... other operations
 ```
@@ -42,19 +42,19 @@ Initializes the storage instance with the provided storage object.
 - **resetChromeStorage(): Promise<void>**
 Resets the Chrome storage to its initial state by setting all keys to undefined.
 
-- **updateStorageSettingsKeyValue(setting: string, value: any): Promise<void>**
+- **updateStorageKeyValue(setting: string, value: any): Promise<void>**
 Updates a specific key in the Chrome storage with the provided value.
 
-- **getStorageSettingsKeyValue(key: string, cb: Function): Promise<void>**
+- **getStorageKeyValue(key: string, cb: Function): Promise<void>**
 Retrieves the value associated with a specific key from the Chrome storage.
 
-- **getStorageSettingsKeysValue(keys: Array<string>, cb: Function): Promise<void>**
+- **getStorageKeysValue(keys: Array<string>, cb: Function): Promise<void>**
 Retrieves the values associated with multiple keys from the Chrome storage.
 
-- **addListenerChromeStorageSettingsValue(key: string, cb: Function): Promise<void>**
+- **addListenerChromeStorageValue(key: string, cb: Function): Promise<void>**
 Adds a listener to detect changes to a specific key in the Chrome storage.
 
-- **addListenerChromeStorageSettingsValues(keys: Array<string>, cb: Function): Promise<void>**
+- **addListenerChromeStorageValues(keys: Array<string>, cb: Function): Promise<void>**
 Adds a listener to detect changes to multiple keys in the Chrome storage.
 
 ## Contributing

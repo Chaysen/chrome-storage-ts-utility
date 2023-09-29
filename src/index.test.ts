@@ -40,7 +40,7 @@ describe("ChromeStorageTS", () => {
 
   it("should update storage key value", async () => {
     const instance = new ChromeStorageTS({});
-    await instance.updateStorageSettingsKeyValue("key1", "newValue");
+    await instance.updateStorageKeyValue("key1", "newValue");
     expect(mockSet).toHaveBeenCalledWith({ key1: "newValue" });
   });
 
@@ -48,7 +48,7 @@ describe("ChromeStorageTS", () => {
     const callback = jest.fn();
     mockGet.mockImplementation((key, cb) => cb({ key1: "value1" }));
     const instance = new ChromeStorageTS({});
-    await instance.getStorageSettingsKeyValue("key1", callback);
+    await instance.getStorageKeyValue("key1", callback);
     expect(callback).toHaveBeenCalledWith("value1");
   });
 
@@ -58,24 +58,21 @@ describe("ChromeStorageTS", () => {
       cb({ key1: "value1", key2: "value2" })
     );
     const instance = new ChromeStorageTS({});
-    await instance.getStorageSettingsKeysValue(["key1", "key2"], callback);
+    await instance.getStorageKeysValue(["key1", "key2"], callback);
     expect(callback).toHaveBeenCalledWith({ key1: "value1", key2: "value2" });
   });
 
   it("should add listener for storage key", async () => {
     const callback = jest.fn();
     const instance = new ChromeStorageTS({});
-    await instance.addListenerChromeStorageSettingsValue("key1", callback);
+    await instance.addListenerChromeStorageValue("key1", callback);
     expect(mockAddListener).toHaveBeenCalled();
   });
 
   it("should add listener for multiple storage keys", async () => {
     const callback = jest.fn();
     const instance = new ChromeStorageTS({});
-    await instance.addListenerChromeStorageSettingsValues(
-      ["key1", "key2"],
-      callback
-    );
+    await instance.addListenerChromeStorageValues(["key1", "key2"], callback);
     expect(mockAddListener).toHaveBeenCalled();
   });
 });
