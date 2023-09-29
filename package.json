@@ -27,9 +27,6 @@
     "type": "git",
     "url": "https://github.com/Chaysen/chrome-storage-ts-utility.git"
   },
-  "publishConfig": {
-    "@Chaysen:registry": "https://npm.pkg.github.com"
-  },
   "keywords": [
     "typescript",
     "chrome",
