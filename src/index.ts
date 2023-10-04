@@ -10,6 +10,15 @@
 export type ChromeStorageObject = Record<string, any>;
 
 /**
+ * Represents the types of storages available in the Chrome API.
+ * @typedef {string} StorageTypes
+ */
+export type StorageTypes = keyof Pick<
+  typeof chrome.storage,
+  "sync" | "local" | "managed" | "session"
+>;
+
+/**
  * A class that provides utility methods to interact with Chrome's local storage in a type-safe manner.
  * @class ChromeStorageTS
  */
@@ -20,13 +29,21 @@ export class ChromeStorageTS {
   /** An array of keys present in the storage object. */
   public keys: Array<keyof typeof this.storage>;
 
+  /** The type of Chrome storage to interact with (e.g., "local", "sync"). */
+  public storageType: StorageTypes;
+
   /**
    * Creates an instance of ChromeStorageTS.
    * @param {ChromeStorageObject} storage - The initial storage object.
+   * @param {StorageTypes} storageType - The type of Chrome storage to use. Defaults to "local".
    */
-  constructor(storage: ChromeStorageObject) {
+  constructor(
+    storage: ChromeStorageObject,
+    storageType: StorageTypes = "local"
+  ) {
     this.storage = storage;
     this.keys = Object.keys(storage);
+    this.storageType = storageType;
   }
 
   /**
@@ -49,7 +66,7 @@ export class ChromeStorageTS {
     setting: T,
     value: (typeof this.storage)[T]
   ): Promise<void> {
-    await chrome.storage.local.set({
+    await chrome.storage[this.storageType].set({
       [setting]: value,
     });
   }
@@ -64,7 +81,7 @@ export class ChromeStorageTS {
     key: T,
     cb: (settings: (typeof this.storage)[T]) => void
   ): Promise<void> {
-    await chrome.storage.local.get(key, (value) => {
+    await chrome.storage[this.storageType].get(key, (value) => {
       cb(value[key] as (typeof this.storage)[T]);
     });
   }
@@ -81,7 +98,7 @@ export class ChromeStorageTS {
       [k in T]: (typeof this.storage)[k];
     }) => void
   ): Promise<void> {
-    await chrome.storage.local.get(keys, (value) => {
+    await chrome.storage[this.storageType].get(keys, (value) => {
       cb(value as { [k in T]: (typeof this.storage)[k] });
     });
   }
@@ -96,11 +113,13 @@ export class ChromeStorageTS {
     key: T,
     cb: (settings: (typeof this.storage)[T]) => void
   ): Promise<void> {
-    await chrome.storage.local.onChanged.addListener((ChromeChangeObject) => {
-      if (key in ChromeChangeObject) {
-        cb(ChromeChangeObject[key].newValue);
+    await chrome.storage[this.storageType].onChanged.addListener(
+      (ChromeChangeObject) => {
+        if (key in ChromeChangeObject) {
+          cb(ChromeChangeObject[key].newValue);
+        }
       }
-    });
+    );
   }
 
   /**
@@ -115,14 +134,16 @@ export class ChromeStorageTS {
       [k in T]?: (typeof this.storage)[k] | undefined;
     }) => void
   ): Promise<void> {
-    await chrome.storage.local.onChanged.addListener((ChromeChangeObject) => {
-      const newStorage: {
-        [k in T]?: (typeof this.storage)[k];
-      } = keys.reduce(
-        (acc, val) => ({ ...acc, [val]: ChromeChangeObject[val]?.newValue }),
-        {}
-      );
-      cb(newStorage);
-    });
+    await chrome.storage[this.storageType].onChanged.addListener(
+      (ChromeChangeObject) => {
+        const newStorage: {
+          [k in T]?: (typeof this.storage)[k];
+        } = keys.reduce(
+          (acc, val) => ({ ...acc, [val]: ChromeChangeObject[val]?.newValue }),
+          {}
+        );
+        cb(newStorage);
+      }
+    );
   }
 }

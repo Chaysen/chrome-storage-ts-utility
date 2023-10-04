@@ -1,6 +1,6 @@
 {
   "name": "chrome-storegae-ts",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Typesafe Chrome Storage ",
   "scripts": {
     "build": "tsup",

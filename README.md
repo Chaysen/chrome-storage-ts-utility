@@ -27,7 +27,7 @@ const initialStorage = {
   key2: 'value2',
 };
 
-const storageInstance = new ChromeStorageTS(initialStorage);
+const storageInstance = new ChromeStorageTS(initialStorage, 'local'); // 'local' is the default storage type
 
 // Update a key in the storage
 storageInstance.updateStorageKeyValue('key1', 'newValue');
@@ -36,8 +36,8 @@ storageInstance.updateStorageKeyValue('key1', 'newValue');
 ```
 ## API
 ### ChromeStorageTS
-- **constructor(storage: ChromeStorageObject)**
-Initializes the storage instance with the provided storage object.
+- **constructor(storage: ChromeStorageObject, storageType: StorageTypes = 'local')**
+Initializes the storage instance with the provided storage object and specifies the type of 
 
 - **resetChromeStorage(): Promise<void>**
 Resets the Chrome storage to its initial state by setting all keys to undefined.
